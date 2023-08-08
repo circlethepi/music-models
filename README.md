@@ -9,7 +9,11 @@ Program to statistically analyze melodies in [abc notation](https://abcnotation.
 This code and its results were used in [Music as Math: A Time-Dependent Markov Model for Irish Folktune Melodies]() by applying it to the [abc version of the Nottingham Music Database](https://abc.sourceforge.net/NMD/). The data used is included here to easily reproduce any results. This program may also be used on any collection of music in the abc format.
 
 ### Table of Contents
-[Introduction](doc:introduction)
+1. [Introduction](#Introduction)
+2. [Starting Functions](#Starting-Functions)
+3. [note](#note)
+4. [key_length](#key_length)
+
 
 
 ## Starting Functions
