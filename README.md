@@ -39,7 +39,7 @@ an object to define the time signature of a song
 * **input: timeinfo |** the bottom number in a time signature
 ---
 #### properties
-* default_length |** the default length for a note in the abc notation for the song. This is essentially 1/timeinfo
+* **default_length |** the default length for a note in the abc notation for the song. This is essentially 1/timeinfo
 
 ### class: song_key
 the key of a song
