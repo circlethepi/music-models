@@ -46,14 +46,14 @@ the key of a song
 * **input: keyinfo |** the raw information of the key
 ---
 #### properties
-* **key_raw |** str: the raw key_info
-* **pkeymode |** str: the mode of the key
+* **key_raw |** str: the raw keyinfo (input)
+* **keymode |** str: the mode of the key
   * ex. dorian, mixolydian, etc
 * **keycenter |** str: the key center of the key 
   * ex. the key center of G major is G
 * **relative_major |** str: the relative major of the key 
   * ex. the relative major of A# minor is C#
-* **keymap |** dict: dictionary of flat/sharp modifiers for the key
+* **keymap |** dict: dictionary of flat/sharp modifiers for the key in abc convention
   * ex the keymap for Bb major is `{'A': 'A', 'B': '_B', 'C': 'C', 'D': 'D', 'E': '_E', 'F': 'F', 'G': 'G', ' ': ' ', 'Z': 'Z'}`
 
 ## [song_processer](song_processer.py)
@@ -71,16 +71,16 @@ converts notes in abc notation into pitch class notation (an integer in base 12)
 * **output: pcr |** list of integers: pitch class representation of note(s) - integers in base 12
 
 ### function: key_signature_mapping
-adds accidentals; maps a melody to its keymap 
+adds accidentals to a melody; maps a melody to its keymap 
 * **input: music |** str: stripped and expanded music; output from expand_music
 * **input: keymap |** dict: a key_length.song_key.keymap
 * **output: converted |** str: music with accidentals to match the keymap
 
 ### class: pre_song
-essentially a tune object from ajkabc. Called pre-song as it is a pre-processing song before we use it. Has properties as defined by the header lines in abc content and song content that has not been modified.
+essentially a tune object from sjkabc. Called pre-song as it is a pre-pre-processing song before we use it. Has properties as defined by the header lines in abc content and song content that has not been modified.
 
 ### class: post_song
-processed song with the information that we want
+processed song with the information that we want for analysis
 * **input: pre_song |** a pre_song object 
 ---
 #### properties
@@ -88,7 +88,7 @@ processed song with the information that we want
 * **music |** str: the expanded and stripped abc version of the pre_song
 * **given_key |** key_length.song_key: of the song
 * **key_center |** int: the pitch class representation of the key of the given_key
-* **default_keymap |** dict: the keymap of the given_key
+* **default_keymap |** dict: the keymap of the given_key (key_length.song_key.keymap)
 * **pitches |** list: all pitches in order of the song
 * **durations |** list: all durations in order of the song
 * **notelist |** list(note.notes): list of note objects
@@ -99,5 +99,18 @@ processed song with the information that we want
 * **do_mapping |** returns string of self.music with added accidentals from the keymap
 * **extract_notes |** sets attributes of pitches, durations, and notelist 
 
-* 
+## [dataset_creator](dataset_creator.py)
+Preprocesses a set of abc notation songs from a directory and puts them into a data.csv file. 
 
+### function: write_data
+writes data into an output file
+* **input: filepath |** str: filepath to the output file. Must be a csv file
+* **input: inputs |** list(list): a list of lists ie a list of rows of data to add to the file
+* **output: none**
+
+### function: create_data_csv
+creates the data.csv file containing all the preprocessed songs from a set of .txt or .abc files in a directory. The file contains rows of data of the format `'title', 'key_center', 'sum_dur', 'n_notes', '[p][d]'` where the length of `[p]` and `[d]` are each `n_notes`, and where the value of `n_notes` need not be the same for each row. 
+
+* **input: data_directory |** str: the directory path with contains the files with the songs to add to the set
+* **input: output_filename = `'data.csv'`|** str: the name of the file to output the data to. By default, this is `'data.csv` in `os.getcwd()`. 
+* **output: none**
