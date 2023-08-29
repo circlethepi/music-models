@@ -1,6 +1,6 @@
 ##functions from SJKABC
 import textwrap
-import song_processer as ps
+import song_processor as ps
 HEADER_KEYS = dict(
     B='book',
     C='composer',
