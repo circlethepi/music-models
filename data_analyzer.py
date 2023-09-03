@@ -1,6 +1,7 @@
 import csv
 from fractions import Fraction as frac
 from scipy.stats import beta
+import dataset_creator as dc
 
 """
 reads data from data.csv containing information from post_song objects (data.csv is generated in dataset_creator)
@@ -152,6 +153,8 @@ class analysis_set:
     """
     def __init__(self, data_list):
         self.set = data_list
+        # writes the data into a csv
+        dc.write_data('a_set.csv', data_list)
         #for i in fits:
         #    print(i)
 
@@ -177,9 +180,10 @@ class analysis_set:
 
         #fits is the resulting matrix
         self.beta_fit = fits
+        dc.write_data('a_fit.csv', fits)
 
         #creating dists based on the fits
         self.beta_dist = create_distribution_matrix(fits)
-
+        dc.write_data('a_dist.csv', self.beta_dist)
         for i in fits:
             print(i)

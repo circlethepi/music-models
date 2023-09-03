@@ -12,10 +12,11 @@ This code and its results were used in [Music as Math: A Time-Dependent Markov M
 1. [Introduction](#Introduction)
 2. [Starting Functions](#Starting-Functions)
 3. [note](#note)
-4. [key_length](#keylength)
-5. [song_processor](#songprocessor)
-6. [dataset_creator](#datasetcreator)
-7. [data_analyzer](#dataanalyzer)
+4. [key_length](#key_length)
+5. [song_processor](#song_processor)
+6. [dataset_creator](#dataset_creator)
+7. [data_analyzer](#data_analyzer)
+8. [generator](#generator)
 
 
 
@@ -149,9 +150,9 @@ creates a matrix of distribution objects from a matrix of parameters correspondi
 
 
 ### class: row_obj
-A row object generated from a row from a csv file formatted in [dataset_creator](#datasetcreator) (generally, this is `data.csv`).
+A row object generated from a row from a csv file formatted in [dataset_creator](#dataset_creator) (generally, this is `data.csv`).
 
-* **input: \*args |** a row from `data.csv` formatted according to the headers `['title', 'key_center', 'sum_dur', 'n_notes', '[p][d]']` as defined in [dataset_creator](#datasetcreator).
+* **input: \*args |** a row from `data.csv` formatted according to the headers `['title', 'key_center', 'sum_dur', 'n_notes', '[p][d]']` as defined in [dataset_creator](#dataset_creator).
 ---
 #### properties
 * **title |** `str`: the title of the song
@@ -164,9 +165,9 @@ A row object generated from a row from a csv file formatted in [dataset_creator]
 * **times |** `list(float)`: list of the times at which each note occurs relative to the duration of the song ($\forall x, 0 < x < 1$)
 
 ### class: analysis_set
-Object which performs analysis on a 12x12 matrix of data sets containing transition times (a matrix from the output of [create_analysis_sets](#function-createanalysissets))
+Object which performs analysis on a 12x12 matrix of data sets containing transition times (a matrix from the output of [create_analysis_sets](#function-create_analysis_sets)). Also writes the input data (`data_list`) into the `a_set.csv` file.
 
-* **input: data_list |** `list(list(list(float)))`: the output from [create_analysis_sets](#function-createanalysissets)
+* **input: data_list |** `list(list(list(float)))`: the output from [create_analysis_sets](#function-create_analysis_sets)
 ---
 #### properties
 * **set |** `list(list(list(float)))`: the raw input data
@@ -175,5 +176,27 @@ Object which performs analysis on a 12x12 matrix of data sets containing transit
 
 ---
 #### methods
-* **fit_beta |** sets attributes `self.beta_fit` and `self.beta_dist`
+* **fit_beta |** sets attributes `self.beta_fit` and `self.beta_dist` and creates/writes the `a_fit.csv` and `a_dist.csv` 
 
+## [generator](generator.py)
+Evaluates model training/fit and provides analysis of corpus based on the model. 
+
+* **input: fit_filename |** `str`: filename for the csv file containing the fit parameters
+* **input: data_filename |** `str`: filename for the csv file containing the extracted data
+
+---
+
+#### properties
+* **fitmat |** `list(list(tuple(float, float)))`: 12x12 matrix of parameters for each transition
+* **distmat |** `list(list(beta))`: 12x12 matrix of frozen beta distribution objects for each transition
+* **datamat |** `list(list(list(float)))`: 12x12 matrix of transition datasets
+
+---
+
+#### methods
+
+* **generate_transition_matrix**
+  * generates the transition matrix for the model over a certain period of time
+  * **input: time |** `float(0,1)`: the start point of calculating the transition probabilities (lower bound of the integral over each distribution function)
+  * **input: increment |** `float(0,1)`: the amount of time (relative to the length of the song) over which to calculate the probabilities
+  * **output: out |** `list(list(float))`: 12x12 matrix of probabilities of transition from $i$ to $j$ during the interval provided
