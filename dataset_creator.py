@@ -59,7 +59,7 @@ def create_data_csv(data_directory, output_filename='data.csv'):
          for tune in sjk.Parser(content):
             # create a post_song object for each tune
             new = ps.post_song(tune)
-            # print(new.pre.title)
+            print(new.pre.title)
             new.extract_notes()  # have pitches, durations caluculated
 
             row = [tune.title[0], new.key_center, new.total_duration, len(new.notelist)]

@@ -192,11 +192,14 @@ class post_song:  #processed song that has the information that we want
               dur = frac(''.join(duration)) * default_len  # this is our duration
 
             # set pitch
-            pit = pitch_class_representation(''.join(pitch))[0]  # getting integer value of pitch
+            pit = pitch_class_representation(''.join(pitch))[0]
+            #if len(pit):
+            #    pit = pit[0] # getting integer value of pitch
+                #print(pit)
 
-            #print(pitch, pit, duration, dur) #sanity check
+                #print(pitch, pit, duration, dur) #sanity check
 
-            # add to our lists
+                # add to our lists
             pitches.append(pit)
             durations.append(dur)
             notes.append(note.note(pit, dur))
@@ -205,7 +208,7 @@ class post_song:  #processed song that has the information that we want
         setattr(self, 'durations', durations)
         setattr(self, 'notelist', notes)
 
-        print(pitches)
+        #print(pitches)
         return
 
 

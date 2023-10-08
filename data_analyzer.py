@@ -151,10 +151,10 @@ class analysis_set:
     data_list is a set_mat returned from create_analysis_set
 
     """
-    def __init__(self, data_list):
+    def __init__(self, data_list, set_csv_filename='a_set.csv'):
         self.set = data_list
         # writes the data into a csv
-        dc.write_data('a_set.csv', data_list)
+        dc.write_data(set_csv_filename, data_list)
         #for i in fits:
         #    print(i)
 
@@ -164,7 +164,7 @@ class analysis_set:
                 print(len(j))
 
 
-    def fit_beta(self):
+    def fit_beta(self, fit_file='a_fit.csv', beta_file='a_dist.csv'):
         fits = [[],[],[],[],[],[],[],[],[],[],[],[]]
 
         ##running beta mle on sets with samples
@@ -180,10 +180,10 @@ class analysis_set:
 
         #fits is the resulting matrix
         self.beta_fit = fits
-        dc.write_data('a_fit.csv', fits)
+        dc.write_data(fit_file, fits)
 
         #creating dists based on the fits
         self.beta_dist = create_distribution_matrix(fits)
-        dc.write_data('a_dist.csv', self.beta_dist)
+        dc.write_data(beta_file, self.beta_dist)
         for i in fits:
             print(i)
